@@ -48,15 +48,15 @@
             flex: 1;
             margin: 0 10px;
             text-align: center;
-            border: 2px dashed #b2bec3;
+            border: 2px dashed #d3d3d3; 
             border-radius: 10px;
             padding: 30px;
-            background-color: #f1f2f6;
+            background-color: #f8f9fa; 
             transition: background-color 0.3s, border-color 0.3s;
         }
         .file-upload:hover {
-            background-color: #dfe6e9;
-            border-color: #74b9ff;
+            background-color: #e0e0e0; 
+            border-color: #b0b0b0; 
         }
         .file-upload-icon {
             font-size: 50px;
@@ -84,14 +84,14 @@
             padding: 15px;
             font-size: 1.2rem;
             color: #fff;
-            background-color: #0984e3;
+            background-color: #74b9ff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         .btn-submit:hover {
-            background-color: #74b9ff;
+            background-color: #0984e3;
         }
         .spinner {
             display: none;
@@ -120,12 +120,16 @@
             background-color: #fab1a0;
             border: none;
             border-radius: 5px;
+            text-align: center;
             cursor: pointer;
             transition: background-color 0.3s;
+            text-decoration: none;
+            min-width: 250px;
         }
         
         .button-container a:hover {
-            background-color: #ff7675; 
+            background-color: #ff7675;
+            text-decoration: none;
         }
         
         .button-container a.btn-reset {
@@ -137,13 +141,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>Reconciler</h1>
+        <h1>Endorsement Reconciliation</h1>
         <form method="post" id="reconcile-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="file-upload-wrapper">
                 <div class="file-upload" id="file-upload-roster">
                     <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
-                    <p class="file-upload-text">Drag and drop the Active Roster File here or click to select</p>
+                    <p class="file-upload-text">Drag and drop the Loop Active Roster File here or click to select</p>
                     <input type="file" name="active_roster_file" id="file-input-roster" accept=".xlsx, .xls">
                     <div class="file-info" id="file-info-roster" style="display: none;">
                         <p id="file-name-roster"></p>
@@ -168,7 +172,7 @@
                 <a href="#" class="btn-reset" id="reset-link" style="float: right;">Reset</a>
             </div>
             <div style="height: 20px;"></div>
-            <button type="submit" class="btn-submit">Reconcile</button>
+            <button type="submit" class="btn-submit">Start Reconcile</button>
             <div class="spinner">
                 <i class="fas fa-spinner fa-spin"></i>
             </div>
