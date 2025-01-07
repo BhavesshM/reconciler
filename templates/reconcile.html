@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconciler</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2e2e2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #3d3d3d;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 2rem;
+            color: #81c784;
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInSlideUp 1.5s ease-in-out;
+        }
+        @keyframes fadeInSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .file-upload-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .file-upload {
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+            border: 2px dashed #81c784;
+            border-radius: 10px;
+            padding: 30px;
+            background-color: #3d3d3d;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .file-upload:hover {
+            background-color: #4d4d4d;
+            border-color: #66bb6a;
+        }
+        .file-upload-icon {
+            font-size: 50px;
+            color: #81c784;
+            margin-bottom: 20px;
+        }
+        .file-upload-text {
+            font-size: 1rem;
+            color: #b0b0b0;
+        }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        .file-info {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+        .file-info p {
+            margin: 0;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #388e3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #2e7d32;
+        }
+        .spinner {
+            display: none;
+            text-align: center;
+            font-size: 2rem;
+            color: #81c784;
+            margin-top: 20px;
+        }
+        #result-message {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #66bb6a;
+            text-align: center;
+        }
+        #error-message {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #ef5350;
+            text-align: center;
+        }
+        .button-container a {
+            display: inline-block;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #F7DC6F; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .button-container a:hover {
+            background-color: #F2C464; 
+        }
+        
+        .button-container a.btn-reset {
+            float: right;
+            margin-left: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reconciler</h1>
+        <form method="post" id="reconcile-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="file-upload-wrapper">
+                <div class="file-upload" id="file-upload-roster">
+                    <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                    <p class="file-upload-text">Drag and drop the Active Roster File here or click to select</p>
+                    <input type="file" name="active_roster_file" id="file-input-roster" accept=".xlsx, .xls">
+                    <div class="file-info" id="file-info-roster" style="display: none;">
+                        <p id="file-name-roster"></p>
+                        <p id="file-size-roster"></p>
+                    </div>
+                </div>
+                <div class="file-upload" id="file-upload-data">
+                    <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                    <p class="file-upload-text">Drag and drop the Insurer/TPA Data File here or click to select</p>
+                    <input type="file" name="active_data_file" id="file-input-data" accept=".xlsx, .xls">
+                    <div class="file-info" id="file-info-data" style="display: none;">
+                        <p id="file-name-data"></p>
+                        <p id="file-size-data"></p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+            <div class="button-container">
+                <a href="{% url 'download_template' %}">Download Template</a>
+                <a href="#" class="btn-reset" id="reset-link" style="float: right;">Reset</a>
+            </div>
+            <div style="height: 20px;"></div>
+            <button type="submit" class="btn-submit">Reconcile</button>
+            <div class="spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div id="error-message" style="color: #ef5350; text-align: center;"></div>
+
+            
+        </form>
+
+        <div class="button-container">
+            <button type="button" class="btn-submit" id="report-button" style="display: none;">Download Report</button>
+        </div>
+
+        <div style="height: 20px;"></div>   
+
+        <div class="button-container">
+        <button type="button" class="btn-submit" id="graph-button" style="display: none;">Show Graph</button>
+        </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function initFileUpload(fileUploadId, fileInputId, fileInfoId, fileNameId, fileSizeId) {
+            const fileUpload = document.getElementById(fileUploadId);
+            const fileInput = document.getElementById(fileInputId);
+            const fileInfo = document.getElementById(fileInfoId);
+            const fileName = document.getElementById(fileNameId);
+            const fileSize = document.getElementById(fileSizeId);
+        
+            fileUpload.addEventListener('click', () => {
+                fileInput.click();
+            });
+        
+            fileUpload.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                fileUpload.style.backgroundColor = '#4d4d4d';
+            });
+        
+            fileUpload.addEventListener('dragleave', () => {
+                fileUpload.style.backgroundColor = '#3d3d3d';
+            });
+        
+            fileUpload.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+                handleFiles(files, fileName, fileSize, fileInfo);
+                fileUpload.style.backgroundColor = '#3d3d3d';
+                fileInput.files = files; // Add this line to update the file input field
+            });
+        
+            fileInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                handleFiles(files, fileName, fileSize, fileInfo);
+            });
+        }        
+        function handleFiles(files, fileNameElement, fileSizeElement, fileInfoElement) {
+            const file = files[0];
+            fileNameElement.textContent = `File Name: ${file.name}`;
+            fileSizeElement.textContent = `File Size: ${(file.size / 1024).toFixed(2)} KB`;
+            fileInfoElement.style.display = 'block';
+        }
+
+        $(document).ready(function() {
+            initFileUpload('file-upload-roster', 'file-input-roster', 'file-info-roster', 'file-name-roster', 'file-size-roster');
+            initFileUpload('file-upload-data', 'file-input-data', 'file-info-data', 'file-name-data', 'file-size-data');
+        
+            $('#reconcile-form').on('submit', function(e) {
+                e.preventDefault();
+        
+                // Clear previous error messages
+                $('#error-message').text('');
+        
+                // Check if both files are selected
+                const rosterFile = document.getElementById('file-input-roster').files[0];
+                const dataFile = document.getElementById('file-input-data').files[0];
+        
+                if (!rosterFile && !dataFile) {
+                    $('#error-message').text('Please upload both files.');
+                } else if (!rosterFile) {
+                    $('#error-message').text('Please upload the Active Roster File.');
+                } else if (!dataFile) {
+                    $('#error-message').text('Please upload the Insurer/TPA Data File.');
+                } else {
+                    // Both files are present, you can submit the form
+                    this.submit();
+                   // $('#report-button').show();
+                   // $('#graph-button').show();  
+                }
+                
+            });
+        });
+        
+        $('#reset-link').on('click', function() {
+            $('#file-input-roster').val('');
+            $('#file-input-data').val('');
+            $('#file-info-roster').hide();
+            $('#file-info-data').hide();
+            $('#graph-button').hide();
+            $('#report-button').hide();
+            $('#error-message').hide();
+        });
+    </script>
+</body>
+</html>
