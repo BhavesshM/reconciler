@@ -9,8 +9,8 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2e2e2e;
-            color: #e0e0e0;
+            background-color: #f9f9f9;
+            color: #333;
             margin: 0;
             padding: 0;
         }
@@ -18,13 +18,13 @@
             max-width: 900px;
             margin: 60px auto;
             padding: 30px;
-            background-color: #3d3d3d;
+            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
         h1 {
             font-size: 2rem;
-            color: #81c784;
+            color: #2c3e50;
             text-align: center;
             margin-bottom: 40px;
             animation: fadeInSlideUp 1.5s ease-in-out;
@@ -48,24 +48,24 @@
             flex: 1;
             margin: 0 10px;
             text-align: center;
-            border: 2px dashed #81c784;
+            border: 2px dashed #b2bec3;
             border-radius: 10px;
             padding: 30px;
-            background-color: #3d3d3d;
+            background-color: #f1f2f6;
             transition: background-color 0.3s, border-color 0.3s;
         }
         .file-upload:hover {
-            background-color: #4d4d4d;
-            border-color: #66bb6a;
+            background-color: #dfe6e9;
+            border-color: #74b9ff;
         }
         .file-upload-icon {
             font-size: 50px;
-            color: #81c784;
+            color: #74b9ff;
             margin-bottom: 20px;
         }
         .file-upload-text {
             font-size: 1rem;
-            color: #b0b0b0;
+            color: #636e72;
         }
         .file-upload input[type="file"] {
             display: none;
@@ -73,7 +73,7 @@
         .file-info {
             margin-top: 20px;
             font-size: 0.9rem;
-            color: #e0e0e0;
+            color: #636e72;
         }
         .file-info p {
             margin: 0;
@@ -84,32 +84,32 @@
             padding: 15px;
             font-size: 1.2rem;
             color: #fff;
-            background-color: #388e3c;
+            background-color: #0984e3;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         .btn-submit:hover {
-            background-color: #2e7d32;
+            background-color: #74b9ff;
         }
         .spinner {
             display: none;
             text-align: center;
             font-size: 2rem;
-            color: #81c784;
+            color: #0984e3;
             margin-top: 20px;
         }
         #result-message {
             margin-top: 20px;
             font-size: 1rem;
-            color: #66bb6a;
+            color: #0984e3;
             text-align: center;
         }
         #error-message {
             margin-top: 20px;
             font-size: 1rem;
-            color: #ef5350;
+            color: #d63031;
             text-align: center;
         }
         .button-container a {
@@ -117,7 +117,7 @@
             padding: 15px;
             font-size: 1.2rem;
             color: #fff;
-            background-color: #F7DC6F; 
+            background-color: #fab1a0;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -125,7 +125,7 @@
         }
         
         .button-container a:hover {
-            background-color: #F2C464; 
+            background-color: #ff7675; 
         }
         
         .button-container a.btn-reset {
@@ -139,7 +139,7 @@
     <div class="container">
         <h1>Reconciler</h1>
         <form method="post" id="reconcile-form" enctype="multipart/form-data">
-            {% csrf_token %}
+            <!-- {% csrf_token %} -->
             <div class="file-upload-wrapper">
                 <div class="file-upload" id="file-upload-roster">
                     <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
