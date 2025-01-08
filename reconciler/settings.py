@@ -28,6 +28,12 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
+# SECRET_KEY = "django-insecure-fj6r@-@)5h34xisoy^mc&!xf%@8(v9&g4d9_cflfh%q0c=)zuu"
+
+# DEBUG = True
+
+# ALLOWED_HOSTS = []
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
